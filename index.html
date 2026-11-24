@@ -877,7 +877,7 @@ const votosRealizados = new Set();
 function renderizarRanking() {
   const contenedor = document.getElementById('lista-servidores');
   let ordenados = [...servidores].sort((a, b) => b.votos - a.votos);
-  contenedor.innerHTML = ordenados.map((srv, index) => {
+ contenedor.innerHTML = ordenados.map((srv, index) => {
     const pos = index + 1;
     const claseTop = pos <= 3 ? top-${pos} : '';
     const yaVoto = votosRealizados.has(srv.id);
