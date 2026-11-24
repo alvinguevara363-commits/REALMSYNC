@@ -199,7 +199,6 @@ main {
   display: block;
 }
 
-/* Panel de admin oculto por defecto y solo visible tras validar login */
 #admin-panel {
   display: none !important;
 }
@@ -882,17 +881,15 @@ function renderizarRanking() {
     const pos = index + 1;
     const claseTop = pos <= 3 ? top-${pos} : '';
     const yaVoto = votosRealizados.has(srv.id);
-    return `
-      <article class="server-item ${claseTop}">
+    return `<article class="server-item ${claseTop}">
         <div class="rank-num">#${pos}</div>
         <div class="server-info">
           <h3>${srv.nombre}</h3>
-          <p><span class="status">${srv.online ? 'Online' : 'Offline'}</span> &nbsp;•&nbsp; ${srv.juego} &nbsp;•&nbsp; ${srv.cap}</p>
+          <p><span class="status">${srv.online ? 'Online' : 'Offline'}</span> &nbsp;&bull;&nbsp; ${srv.juego} &nbsp;&bull;&nbsp; ${srv.cap}</p>
         </div>
         <div class="server-stats"><div><strong>${srv.votos}</strong> Votos</div></div>
         <button class="btn-vote" onclick="votar(${srv.id})" ${yaVoto ? 'disabled' : ''}>${yaVoto ? '✓ Votado' : '⭐ Votar'}</button>
-      </article>
-    `;
+      </article>`;
   }).join('');
 }
 
