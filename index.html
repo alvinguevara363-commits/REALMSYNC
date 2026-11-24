@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RealmSync — El Nexo Definitivo</title>
+
+<style>
+:root {
+  color-scheme: dark;
+  --bg: #03050a;
+  --panel: rgba(10, 15, 30, 0.85); 
+  --border: rgba(0, 240, 255, 0.3);
+  --text: #ffffff;
+  --muted: #a0b0c8;
+  --cyan: #00f0ff;
+  --cyan-glow: rgba(0, 240, 255, 0.6);
+  --purple: #8a2be2;
+  --gold: #ffd700;
+  --silver: #c0c0c0;
+  --bronze: #cd7f32;
+  --danger: #ff3333;
+  --success: #00ff88;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font: 15px/1.6 'Segoe UI', system-ui, sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* =========================================
+   FONDO ÉPICO (Dragón + Neblina)
+   ========================================= */
+.epic-background { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; background: radial-gradient(circle at 50% 100%, #1a0b2e 0%, #03050a 70%); overflow: hidden; }
+.moon-glow { position: absolute; top: 10%; left: 50%; transform: translateX(-50%); width: 600px; height: 600px; background: radial-gradient(circle, rgba(138, 43, 226, 0.15) 0%, transparent 60%); border-radius: 50%; animation: pulse 8s infinite alternate; }
+.dragon-container { position: absolute; top: 15%; left: -200px; width: 200px; animation: fly 18s linear infinite; z-index: 1; }
+.dragon-svg { width: 100%; height: auto; stroke: var(--cyan); stroke-width: 1.5; fill: rgba(0, 240, 255, 0.1); filter: drop-shadow(0 0 15px var(--cyan)); }
+.castle-silhouette { position: absolute; bottom: 0; left: 0; width: 100%; height: 40vh; background: linear-gradient(to top, #03050a 20%, transparent); z-index: 0; }
+.castle-silhouette::before { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 100%; background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1000 300" xmlns="http://www.w3.org/2000/svg"><path d="M0,300 L0,250 L50,250 L50,200 L100,200 L100,250 L150,250 L150,180 L200,180 L200,220 L250,220 L250,150 L300,150 L300,200 L350,200 L350,100 L400,100 L400,150 L450,150 L450,50 L550,50 L550,150 L600,150 L600,100 L650,100 L650,200 L700,200 L700,150 L750,150 L750,220 L800,220 L800,180 L850,180 L850,250 L900,250 L900,200 L950,200 L950,250 L1000,250 L1000,300 Z" fill="%23000000" opacity="0.9"/></svg>') no-repeat bottom center; background-size: cover; }
+.fog { position: absolute; bottom: -50px; left: 0; width: 200%; height: 350px; background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1000 300" xmlns="http://www.w3.org/2000/svg"><path d="M0,300 Q100,200 200,250 T400,200 T600,250 T800,200 T1000,250 L1000,300 Z" fill="%2300f0ff" opacity="0.05"/></svg>'); background-size: 50% 100%; animation: fogMove 20s linear infinite; pointer-events: none; z-index: 2; }
+@keyframes pulse { 0% { transform: translateX(-50%) scale(1); opacity: 0.8; } 100% { transform: translateX(-50%) scale(1.2); opacity: 1; } }
+@keyframes fogMove { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+@keyframes fly { 0% { transform: translateX(0) translateY(0) scale(0.😎 rotate(5deg); } 50% { transform: translateX(50vw) translateY(-30px) scale(1) rotate(-5deg); } 100% { transform: translateX(110vw) translateY(10px) scale(0.😎 rotate(5deg); } }
+
+/* =========================================
+   INTERFAZ
+   ========================================= */
+header { background: rgba(3, 5, 10, 0.85); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(15px); }
+.nav-container { max-width: 1300px; margin: auto; display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; flex-wrap: wrap; gap: 15px; }
+.logo { font: 800 28px/1 Impact, sans-serif; letter-spacing: 2px; background: linear-gradient(90deg, #fff, var(--cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.tabs { display: flex; gap: 10px; background: rgba(255,255,255,0.05); padding: 5px; border-radius: 30px; border: 1px solid var(--border); flex-wrap: wrap; }
+.tab-btn { background: transparent; border: none; color: var(--muted); padding: 8px 20px; border-radius: 20px; cursor: pointer; font-weight: bold; font-size: 14px; transition: 0.3s; }
+.tab-btn.active { background: var(--cyan); color: #000; box-shadow: 0 0 15px var(--cyan-glow); }
+
+main { max-width: 1300px; margin: 30px auto; padding: 0 20px; position: relative; z-index: 10; flex: 1; width: 100%; }
+.view-section { display: none; animation: fadeIn 0.4s ease; }
+.view-section.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.card { background: var(--panel); backdrop-filter: blur(12px); border: 1px solid var(--border); border-radius: 16px; padding: 25px; margin-bottom: 25px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5); }
+.card-title { font: 600 20px Georgia, serif; margin-bottom: 20px; border-left: 4px solid var(--cyan); padding-left: 15px; }
+
+/* =========================================
+   FASE 1: RANKING
+   ========================================= */
+.banners-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 20px; margin-bottom: 40px; }
+.banner { height: 120px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font: 700 22px Georgia, serif; color: white; position: relative; overflow: hidden; transition: 0.4s; cursor: pointer; background-size: cover; background-position: center; border: 1px solid var(--border); }
+.banner:hover { transform: translateY(-5px) scale(1.02); border-color: var(--cyan); box-shadow: 0 10px 30px var(--cyan-glow); }
+.banner::after { content: "AD"; position: absolute; top: 8px; right: 8px; font-size: 10px; background: #000; padding: 2px 6px; border-radius: 4px; color: var(--muted); }
+.section-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 25px; border-bottom: 1px solid var(--border); padding-bottom: 15px; }
+.section-header h1 { font: 400 32px Georgia, serif; text-shadow: 0 0 20px var(--purple); }
+.server-list { display: flex; flex-direction: column; gap: 15px; }
+.server-item { display: flex; align-items: center; border-radius: 12px; padding: 15px 25px; transition: 0.3s; background: rgba(0,0,0,0.4); border: 1px solid var(--border); }
+.server-item:hover { transform: translateX(8px); border-color: var(--cyan); box-shadow: -5px 0 20px var(--cyan-glow); }
+.server-item.top-1 { border-color: var(--gold); background: linear-gradient(90deg, rgba(255, 215, 0, 0.15), var(--panel)); }
+.server-item.top-2 { border-color: var(--silver); background: linear-gradient(90deg, rgba(192, 192, 192, 0.15), var(--panel)); }
+.server-item.top-3 { border-color: var(--bronze); background: linear-gradient(90deg, rgba(205, 127, 50, 0.15), var(--panel)); }
+.rank-num { font: 800 26px Impact, sans-serif; color: var(--muted); width: 60px; }
+.top-1 .rank-num { color: var(--gold); text-shadow: 0 0 10px var(--gold); }
+.top-2 .rank-num { color: var(--silver); }
+.top-3 .rank-num { color: var(--bronze); }
+.server-info { flex: 1; }
+.server-info h3 { font-size: 20px; margin-bottom: 4px; }
+.server-info p { color: var(--muted); font-size: 13px; }
+.status { color: var(--success); display: inline-flex; align-items: center; gap: 5px; }
+.status::before { content: ''; width: 8px; height: 8px; background: var(--success); border-radius: 50%; box-shadow: 0 0 10px var(--success); }
+.server-stats { display: flex; gap: 30px; margin-right: 30px; text-align: center; }
+.server-stats strong { display: block; font-size: 18px; color: white; }
+.btn-vote { background: transparent; border: 1px solid var(--cyan); color: var(--cyan); padding: 10px 25px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+.btn-vote:hover { background: var(--cyan); color: #000; box-shadow: 0 0 15px var(--cyan-glow); }
+.btn-vote:disabled { border-color: var(--border); color: var(--muted); cursor: not-allowed; }
+
+/* =========================================
+   FASE 2: DIRECTORIO
+   ========================================= */
+.directory-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
+.profile-card { background: rgba(0,0,0,0.4); border: 1px solid var(--border); border-radius: 12px; padding: 25px 20px; text-align: center; transition: 0.3s; }
+.profile-card:hover { transform: translateY(-5px); border-color: var(--cyan); box-shadow: 0 0 20px var(--cyan-glow); }
+.avatar-wrapper { position: relative; width: 100px; height: 100px; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; }
+.avatar-img { width: 80px; height: 80px; border-radius: 50%; background: #1a1a2e; display: flex; align-items: center; justify-content: center; font-size: 35px; z-index: 2; }
+.frame-basic { position: absolute; width: 100px; height: 100px; border-radius: 50%; border: 3px solid #555; z-index: 1; }
+.frame-5 { position: absolute; width: 100px; height: 100px; border-radius: 50%; border: 3px solid var(--silver); z-index: 1; box-shadow: inset 0 0 10px var(--silver), 0 0 15px rgba(192, 192, 192, 0.3); }
+.frame-10 { position: absolute; width: 100px; height: 100px; border-radius: 50%; border: 3px solid var(--gold); z-index: 1; box-shadow: inset 0 0 15px var(--gold), 0 0 20px rgba(255, 215, 0, 0.4); animation: pulse-gold 2s infinite alternate; }
+.frame-20 { position: absolute; width: 110px; height: 110px; border-radius: 50%; background: conic-gradient(var(--cyan), var(--purple), var(--cyan)); z-index: 0; animation: spin 4s linear infinite; filter: drop-shadow(0 0 10px var(--cyan)); }
+.frame-20::after { content: ''; position: absolute; inset: 4px; background: var(--bg); border-radius: 50%; z-index: 1; }
+.frame-20 .avatar-img { z-index: 2; position: relative; }
+.frame-gm { position: absolute; width: 110px; height: 110px; border-radius: 50%; border: 4px solid var(--cyan); z-index: 1; box-shadow: 0 0 25px var(--cyan); }
+.gm-crown { position: absolute; top: -20px; font-size: 24px; z-index: 3; filter: drop-shadow(0 0 5px var(--gold)); animation: float 2s ease-in-out infinite; }
+@keyframes spin { 100% { transform: rotate(360deg); } }
+@keyframes pulse-gold { 0% { box-shadow: inset 0 0 10px var(--gold), 0 0 10px rgba(255, 215, 0, 0.2); } 100% { box-shadow: inset 0 0 20px var(--gold), 0 0 30px rgba(255, 215, 0, 0.8); } }
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+.role-badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: bold; text-transform: uppercase; margin-bottom: 12px; }
+.role-basic { background: rgba(255, 255, 255, 0.1); color: #ccc; }
+.role-5 { background: rgba(192, 192, 192, 0.2); color: var(--silver); }
+.role-10 { background: rgba(255, 215, 0, 0.2); color: var(--gold); }
+.role-20 { background: linear-gradient(90deg, rgba(0,240,255,0.2), rgba(138,43,226,0.2)); color: #fff; border: 1px solid var(--cyan); }
+.role-gm { background: rgba(0, 240, 255, 0.2); color: var(--cyan); border: 1px solid var(--cyan); }
+.package-tag { font-size: 12px; color: var(--muted); margin-top: 10px; }
+
+/* =========================================
+   FASE 3: CHAT CUSTOM
+   ========================================= */
+.realm-chat-container { display: flex; flex-direction: column; height: 600px; background: rgba(0,0,0,0.6); border: 1px solid var(--cyan); border-radius: 16px; overflow: hidden; box-shadow: 0 0 30px rgba(0,240,255,0.15); }
+.realm-chat-header { background: rgba(0, 240, 255, 0.1); border-bottom: 1px solid var(--border); padding: 15px; display: flex; justify-content: space-between; align-items: center; }
+.zone-tabs { display: flex; gap: 10px; }
+.zone-tab { background: transparent; color: var(--muted); border: 1px solid transparent; padding: 5px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+.zone-tab.active { background: rgba(0, 240, 255, 0.2); color: var(--cyan); border-color: var(--cyan); }
+.magic-translate { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--gold); }
+.realm-chat-messages { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
+.r-msg { display: flex; gap: 15px; animation: fadeIn 0.3s ease; }
+.r-avatar { width: 40px; height: 40px; border-radius: 8px; background: var(--purple); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 1px solid var(--border); }
+.r-content { flex: 1; background: rgba(255,255,255,0.03); padding: 10px 15px; border-radius: 0 12px 12px 12px; border-left: 2px solid var(--cyan); }
+.r-header { display: flex; align-items: baseline; gap: 10px; margin-bottom: 5px; }
+.r-author { font-weight: bold; color: var(--cyan); }
+.r-time { font-size: 11px; color: var(--muted); }
+.r-text { color: #dcddde; font-size: 15px; }
+.translate-btn { background: transparent; border: none; color: var(--gold); font-size: 11px; cursor: pointer; margin-top: 8px; display: flex; align-items: center; gap: 5px; }
+.realm-chat-input { padding: 15px; background: rgba(0,0,0,0.4); border-top: 1px solid var(--border); display: flex; gap: 10px; position: relative; }
+.realm-chat-input input { flex: 1; background: rgba(255,255,255,0.05); border: 1px solid var(--border); padding: 15px; border-radius: 8px; color: white; outline: none; font-size: 15px; }
+.realm-chat-input input:focus { border-color: var(--cyan); box-shadow: 0 0 10px rgba(0,240,255,0.2); }
+.realm-chat-input button { background: var(--cyan); border: none; color: #000; padding: 0 25px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+.realm-chat-input button:hover { background: white; box-shadow: 0 0 15px white; }
+.emoji-picker { position: absolute; bottom: 80px; right: 20px; background: var(--panel); border: 1px solid var(--cyan); border-radius: 12px; padding: 15px; display: none; grid-template-columns: repeat(5, 1fr); gap: 10px; z-index: 10; box-shadow: 0 0 20px rgba(0,240,255,0.3); }
+.emoji-picker.active { display: grid; }
+.emoji-picker span { font-size: 24px; cursor: pointer; transition: 0.2s; text-align: center; }
+.emoji-picker span:hover { transform: scale(1.3); }
+
+/* =========================================
+   FASE 4: ADMIN (OCULTO Y CON LOGIN)
+   ========================================= */
+.login-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(3, 5, 10, 0.95); z-index: 1000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(10px); }
+.login-overlay.active { display: flex; }
+.login-box { background: var(--panel); border: 1px solid var(--cyan); padding: 40px; border-radius: 16px; width: 350px; text-align: center; box-shadow: 0 0 30px rgba(0,240,255,0.2); }
+.login-box h2 { color: var(--cyan); margin-bottom: 20px; font-family: Georgia, serif; }
+.login-box input { width: 100%; padding: 12px; margin-bottom: 15px; background: rgba(0,0,0,0.5); border: 1px solid var(--border); color: white; border-radius: 8px; text-align: center; letter-spacing: 2px; }
+.login-box button { width: 100%; padding: 12px; background: var(--cyan); border: none; color: #000; font-weight: bold; border-radius: 8px; cursor: pointer; transition: 0.3s; }
+.login-box button:hover { background: white; box-shadow: 0 0 15px white; }
+.login-error { color: var(--danger); font-size: 13px; margin-bottom: 15px; display: none; }
+
+.admin-table { width: 100%; border-collapse: collapse; text-align: left; }
+.admin-table th { background: rgba(0,0,0,0.3); padding: 15px; color: var(--muted); font-size: 12px; text-transform: uppercase; border-bottom: 1px solid var(--border); }
+.admin-table td { padding: 15px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+.admin-table tr:hover { background: rgba(255,255,255,0.02); }
+.btn-admin { padding: 6px 12px; border-radius: 6px; border: 1px solid transparent; font-weight: bold; cursor: pointer; transition: 0.2s; font-size: 12px; margin-right: 5px; }
+.btn-verify { background: rgba(0, 255, 136, 0.1); color: var(--success); border-color: var(--success); }
+.btn-verify:hover { background: var(--success); color: #000; }
+.btn-ban { background: rgba(255, 51, 51, 0.1); color: var(--danger); border-color: var(--danger); }
+.btn-ban:hover { background: var(--danger); color: white; }
+
+/* Footer Secreto */
+footer { text-align: center; padding: 20px; margin-top: auto; border-top: 1px solid rgba(255,255,255,0.05); }
+.staff-login-btn { background: transparent; border: none; color: #333; font-size: 12px; cursor: pointer; transition: 0.3s; }
+.staff-login-btn:hover { color: var(--muted); }
+
+@media (max-width: 900px) {
+  .nav-container { flex-direction: column; }
+  .tabs { width: 100%; justify-content: center; }
+  .banners-grid { grid-template-columns: 1fr; }
+  .server-item { flex-direction: column; text-align: center; gap: 15px; }
+  .server-stats { margin: 0; justify-content: center; }
+  .realm-chat-header { flex-direction: column; gap: 10px; }
+}
+</style>
+</head>
+<body>
+
+<!-- FONDO ÉPICO -->
+<div class="epic-background">
+  <div class="moon-glow"></div>
+  <div class="dragon-container">
+    <svg class="dragon-svg" viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg">
+      <path d="M20,50 Q40,20 60,50 L100,40 L140,50 Q160,20 180,50 L160,60 L100,70 L40,60 Z M100,40 L110,10 L90,20 Z M60,50 L50,80 L70,60 M140,50 L150,80 L130,60" stroke-linejoin="round" stroke-linecap="round"/>
+    </svg>
+  </div>
+  <div class="castle-silhouette"></div>
+  <div class="fog"></div>
+</div>
+
+<!-- INTERFAZ -->
+<header>
+  <div class="nav-container">
+    <div class="logo">RealmSync</div>
+    <div class="tabs">
+      <button class="tab-btn active" onclick="cambiarFase('inicio', this)">🏆 Ranking</button>
+      <button class="tab-btn" onclick="cambiarFase('directorio', this)">👥 Directorio</button>
+      <button class="tab-btn" onclick="cambiarFase('chat', this)">💬 RealmComms</button>
+      <!-- El botón de Admin ya NO está aquí -->
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- 1. INICIO / RANKING -->
+  <section id="inicio" class="view-section active">
+    <div class="banners-grid">
+      <div class="banner" style="background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=800&auto=format&fit=crop');">Aetherion L2 - Grand Open</div>
+      <div class="banner" style="background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=800&auto=format&fit=crop');">Eclipse MU - Season 6</div>
+    </div>
+    <div class="section-header">
+      <h1>Top Servidores</h1>
+      <span style="color: var(--muted); font-size: 13px;">Ranking Orgánico</span>
+    </div>
+    <div class="server-list" id="lista-servidores"></div>
+  </section>
+
+  <!-- 2. DIRECTORIO -->
+  <section id="directorio" class="view-section">
+    <div class="card">
+      <div class="card-title">Directorio de la Comunidad</div>
+      <div class="directory-grid">
+        <div class="profile-card">
+          <div class="avatar-wrapper"><div class="frame-basic"></div><div class="avatar-img">🛡️</div></div>
+          <h3>JuanKiller</h3><span class="role-badge role-basic">Player</span>
+          <p class="package-tag">Plan Gratuito</p>
+        </div>
+        <div class="profile-card">
+          <div class="avatar-wrapper"><div class="frame-5"></div><div class="avatar-img">🎨</div></div>
+          <h3>Astral Studio</h3><span class="role-badge role-5">Diseñador</span>
+          <p class="package-tag">Miembro Plata ($5)</p>
+        </div>
+        <div class="profile-card">
+          <div class="avatar-wrapper"><div class="frame-10"></div><div class="avatar-img">🎥</div></div>
+          <h3>Kael</h3><span class="role-badge role-10">Streamer</span>
+          <p class="package-tag">Miembro Oro ($10)</p>
+        </div>
+        <div class="profile-card">
+          <div class="avatar-wrapper"><div class="frame-20"></div><div class="avatar-img">⚔️</div></div>
+          <h3>Nyx</h3><span class="role-badge role-20">Streamer Épico</span>
+          <p class="package-tag">Miembro Legendario ($20)</p>
+        </div>
+        <div class="profile-card" style="border-color: var(--cyan);">
+          <div class="avatar-wrapper"><div class="frame-gm"></div><div class="gm-crown">👑</div><div class="avatar-img">🛡️</div></div>
+          <h3>GM_Ares</h3><span class="role-badge role-gm">Game Master</span>
+          <p class="package-tag">Staff Oficial</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. CHAT CUSTOM -->
+  <section id="chat" class="view-section">
+    <div class="realm-chat-container">
+      <div class="realm-chat-header">
+        <div class="zone-tabs">
+          <button class="zone-tab active">🌍 La Taberna</button>
+          <button class="zone-tab">🛒 El Mercado</button>
+        </div>
+        <div class="magic-translate">
+          <span>🌎 Traducción Mágica:</span>
+          <input type="checkbox" id="auto-translate" checked style="cursor: pointer;">
+          <label for="auto-translate" style="cursor: pointer; color: var(--cyan);">ON</label>
+        </div>
+      </div>
+      <div class="realm-chat-messages" id="realm-messages">
+        <div class="r-msg">
+          <div class="r-avatar" style="border-color: var(--gold);">GM</div>
+          <div class="r-content" style="border-left-color: var(--gold);">
+            <div class="r-header"><span class="r-author" style="color: var(--gold);">GM_Ares</span><span class="r-time">10:00</span></div>
+            <div class="r-text">Welcome to the Tavern! Remember to read the rules.</div>
+            <button class="translate-btn" onclick="traducir(this, '¡Bienvenidos a la Taberna! Recuerden leer las reglas.')">🌎 Traducir al Español</button>
+          </div>
+        </div>
+        <div class="r-msg">
+          <div class="r-avatar" style="background: var(--purple);">K</div>
+          <div class="r-content">
+            <div class="r-header"><span class="r-author">Kael (Streamer)</span><span class="r-time">10:02</span></div>
+            <div class="r-text">Alguien para hacer boss en Aetherion? 🐉⚔️</div>
+          </div>
+        </div>
+      </div>
+      <div class="realm-chat-input">
+        <div class="emoji-picker" id="emoji-picker">
+          <span onclick="addEmoji('😀')">😀</span><span onclick="addEmoji('😂')">😂</span><span onclick="addEmoji('😎')">😎</span>
+          <span onclick="addEmoji('🔥')">🔥</span><span onclick="addEmoji('⚔️')">⚔️</span><span onclick="addEmoji('🛡️')">🛡️</span>
+          <span onclick="addEmoji('🐉')">🐉</span><span onclick="addEmoji('👑')">👑</span><span onclick="addEmoji('🎮')">🎮</span>
+        </div>
+        <button type="button" style="background: transparent; border: none; color: var(--muted); font-size: 24px; cursor: pointer; padding: 0 10px;" onclick="toggleEmojis()">😊</button>
+        <input type="text" id="realm-input" placeholder="Escribe un mensaje..." required autocomplete="off">
+        <button type="button" onclick="enviarMensaje()">Transmitir</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. ADMIN (INVISIBLE EN EL MENÚ) -->
+  <section id="admin-panel" class="view-section">
+    <div class="card" style="border-color: var(--gold);">
+      <div class="card-title" style="border-left-color: var(--gold);">Panel de Control Privado</div>
+      <p style="color: var(--muted); margin-bottom: 20px;">Bienvenido, Dueño. Aquí tienes el control total de RealmSync.</p>
+      
+      <table class="admin-table">
+        <thead>
+          <tr><th>Usuario</th><th>Rol</th><th>Estado</th><th>Acciones</th></tr>
+        </thead>
+        <tbody id="admin-table-body">
+          <tr>
+            <td>Kael</td><td>Streamer</td><td style="color:var(--success)">Activo</td>
+            <td>
+              <button class="btn-admin btn-verify">Verificar</button>
+              <button class="btn-admin btn-ban" onclick="banear(this)">Banear</button>
+            </td>
+          </tr>
+          <tr>
+            <td>Astral Studio</td><td>Diseñador</td><td style="color:var(--success)">Activo</td>
+            <td>
+              <button class="btn-admin btn-verify">Verificar</button>
+              <button class="btn-admin btn-ban" onclick="banear(this)">Banear</button>
+            </td>
+          </tr>
+          <tr>
+            <td>JuanKiller</td><td>Player</td><td style="color:var(--success)">Activo</td>
+            <td>
+              <button class="btn-admin btn-verify">Verificar</button>
+              <button class="btn-admin btn-ban" onclick="banear(this)">Banear</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<!-- PUERTA SECRETA (LOGIN) -->
+<div class="login-overlay" id="login-overlay">
+  <div class="login-box">
+    <h2>⚙️ Acceso Restringido</h2>
+    <p style="color: var(--muted); margin-bottom: 20px; font-size: 13px;">Área exclusiva para el Staff de RealmSync.</p>
+    <div class="login-error" id="login-error">Contraseña incorrecta. Intenta de nuevo.</div>
+    <input type="password" id="admin-password" placeholder="Contraseña (Pista: admin)">
+    <button onclick="verificarLogin()">Desbloquear Panel</button>
+    <button onclick="cerrarLogin()" style="background: transparent; color: var(--muted); border: none; margin-top: 15px; cursor: pointer; width: auto;">Cancelar</button>
+  </div>
+</div>
+
+<!-- PIE DE PÁGINA CON BOTÓN SECRETO -->
+<footer>
+  <p style="color: var(--muted); font-size: 13px; margin-bottom: 10px;">&copy; 2024 RealmSync. Todos los derechos reservados.</p>
+  <!-- Botón camuflado. Parece texto normal. -->
+  <button class="staff-login-btn" onclick="abrirLogin()">Staff Login</button>
+</footer>
+
+<script>
+// --- NAVEGACIÓN ---
+function cambiarFase(faseId, boton) {
+  document.querySelectorAll('.view-section').forEach(sec => sec.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+  document.getElementById(faseId).classList.add('active');
+  if(boton) boton.classList.add('active');
+}
+
+// --- RANKING ---
+let servidores = [
+  { id: 1, nombre: "Aetherion", juego: "Lineage II", cap: "x10", online: true, votos: 1450 },
+  { id: 2, nombre: "Eclipse MU", juego: "MU Online", cap: "x100", online: true, votos: 1120 },
+  { id: 3, nombre: "Rexall Online", juego: "Silkroad", cap: "Cap 110", online: true, votos: 980 }
+];
+const votosRealizados = new Set();
+
+function renderizarRanking() {
+  const contenedor = document.getElementById('lista-servidores');
+  let ordenados = [...servidores].sort((a, b) => b.votos - a.votos);
+  contenedor.innerHTML = ordenados.map((srv, index) => {
+    const pos = index + 1;
+    const claseTop = pos <= 3 ? top-${pos} : '';
+    const yaVoto = votosRealizados.has(srv.id);
+    return `
+      <article class="server-item ${claseTop}">
+        <div class="rank-num">#${pos}</div>
+        <div class="server-info">
+          <h3>${srv.nombre}</h3>
+          <p><span class="status">${srv.online ? 'Online' : 'Offline'}</span> &nbsp;•&nbsp; ${srv.juego} &nbsp;•&nbsp; ${srv.cap}</p>
+        </div>
+        <div class="server-stats"><div><strong>${srv.votos}</strong> Votos</div></div>
+        <button class="btn-vote" onclick="votar(${srv.id})" ${yaVoto ? 'disabled' : ''}>${yaVoto ? '✓ Votado' : '⭐ Votar'}</button>
+      </article>
+    `;
+  }).join('');
+}
+
+function votar(id) {
+  if (votosRealizados.has(id)) return;
+  const srv = servidores.find(s => s.id === id);
+  if (srv) { srv.votos++; votosRealizados.add(id); renderizarRanking(); }
+}
+
+// --- CHAT CUSTOM ---
+function toggleEmojis() { document.getElementById('emoji-picker').classList.toggle('active'); }
+function addEmoji(emoji) { const input = document.getElementById('realm-input'); input.value += emoji; input.focus(); toggleEmojis(); }
+
+function enviarMensaje() {
+  const input = document.getElementById('realm-input');
+  const texto = input.value.trim();
+  if (!texto) return;
+  const chatBox = document.getElementById('realm-messages');
+  const nuevoMsg = document.createElement('div');
+  nuevoMsg.className = 'r-msg';
+  const ahora = new Date();
+  const hora = ahora.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+
+  // Creación de nodos (Anti-XSS)
+  const avatar = document.createElement('div'); avatar.className = 'r-avatar'; avatar.style.background = 'var(--cyan)'; avatar.style.color = '#000'; avatar.textContent = 'Tú';
+  const content = document.createElement('div'); content.className = 'r-content';
+  const header = document.createElement('div'); header.className = 'r-header';
+  const author = document.createElement('span'); author.className = 'r-author'; author.textContent = 'Tú';
+  const time = document.createElement('span'); time.className = 'r-time'; time.textContent = hora;
+  const textDiv = document.createElement('div'); textDiv.className = 'r-text'; textDiv.textContent = texto;
+
+  header.appendChild(author); header.appendChild(time);
+  content.appendChild(header); content.appendChild(textDiv);
+  nuevoMsg.appendChild(avatar); nuevoMsg.appendChild(content);
+  
+  chatBox.appendChild(nuevoMsg);
+  input.value = '';
+  chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+function traducir(boton, textoTraducido) {
+  const contenedor = boton.parentElement.querySelector('.r-text');
+  contenedor.textContent = textoTraducido;
+  contenedor.style.color = 'var(--cyan)';
+  contenedor.style.fontStyle = 'italic';
+  boton.style.display = 'none';
+}
+
+// --- SISTEMA DE LOGIN SECRETO Y ADMIN ---
+function abrirLogin() {
+  document.getElementById('login-overlay').classList.add('active');
+  document.getElementById('admin-password').focus();
+  document.getElementById('login-error').style.display = 'none';
+}
+
+function cerrarLogin() {
+  document.getElementById('login-overlay').classList.remove('active');
+  document.getElementById('admin-password').value = '';
+}
+
+function verificarLogin() {
+  const pass = document.getElementById('admin-password').value;
+  if (pass === 'admin') { // En producción, esto se valida en el servidor
+    cerrarLogin();
+    // Ocultar pestañas públicas y mostrar el panel de admin
+    document.querySelectorAll('.view-section').forEach(sec => sec.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    document.getElementById('admin-panel').classList.add('active');
+    
+    // Opcional: Podrías añadir dinámicamente un botón "Salir de Admin" aquí
+  } else {
+    document.getElementById('login-error').style.display = 'block';
+    document.getElementById('admin-password').value = '';
+  }
+}
+
+function banear(boton) {
+  const fila = boton.closest('tr');
+  const estado = fila.querySelector('td:nth-child(3)');
+  estado.textContent = 'Baneado';
+  estado.style.color = 'var(--danger)';
+  boton.textContent = 'Desbanear';
+  boton.classList.remove('btn-ban');
+  boton.classList.add('btn-verify');
+  boton.style.color = 'var(--success)';
+}
+
+// Iniciar
+renderizarRanking();
+</script>
+
+</body>
+</html>
