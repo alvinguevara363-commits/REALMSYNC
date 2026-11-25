@@ -13,9 +13,7 @@
     min-width: 0;
   }
 
-  .rs-pad {
-    padding: 22px;
-  }
+  .rs-pad { padding: 22px; }
 
   .rs-cover {
     position: relative;
@@ -40,6 +38,8 @@
       45% 5%, 60% 60%, 80% 15%,
       100% 75%, 100% 100%
     );
+    z-index: 1;
+    pointer-events: none;
   }
 
   .rs-cover.rs-purple {
@@ -62,9 +62,7 @@
       linear-gradient(135deg, #3b2931, #746044, #151d30);
   }
 
-  .rs-mini-cover {
-    height: 100px;
-  }
+  .rs-mini-cover { height: 100px; }
 
   .rs-cover-photo {
     position: absolute;
@@ -72,7 +70,7 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    z-index: 1;
+    z-index: 0;
   }
 
   .rs-cover-label {
@@ -120,9 +118,7 @@
     object-fit: cover;
   }
 
-  .rs-avatar.rs-silver-frame {
-    box-shadow: 0 0 0 3px #c1cddd;
-  }
+  .rs-avatar.rs-silver-frame { box-shadow: 0 0 0 3px #c1cddd; }
 
   .rs-avatar.rs-gold-frame {
     box-shadow:
@@ -130,9 +126,7 @@
       0 0 25px rgba(217, 183, 107, 0.2);
   }
 
-  .rs-member-body {
-    padding: 0 21px 21px;
-  }
+  .rs-member-body { padding: 0 21px 21px; }
 
   .rs-member-body .rs-avatar {
     margin-top: -32px;
@@ -173,14 +167,8 @@
     cursor: pointer;
   }
 
-  .rs-button:hover {
-    border-color: #84acff;
-  }
-
-  .rs-button:disabled {
-    opacity: 0.55;
-    cursor: not-allowed;
-  }
+  .rs-button:hover { border-color: #84acff; }
+  .rs-button:disabled { opacity: 0.55; cursor: not-allowed; }
 
   .rs-button.rs-primary {
     border-color: #6798f5;
@@ -189,9 +177,7 @@
     font-weight: 700;
   }
 
-  .rs-member-body > .rs-button {
-    width: 100%;
-  }
+  .rs-member-body > .rs-button { width: 100%; }
 
   .rs-toolbar,
   .rs-actions {
@@ -200,9 +186,7 @@
     gap: 8px;
   }
 
-  .rs-toolbar {
-    margin-bottom: 20px;
-  }
+  .rs-toolbar { margin-bottom: 20px; }
 
   .rs-toolbar input {
     flex: 1;
@@ -332,19 +316,32 @@
     resize: vertical;
   }
 
-  .rs-compose .rs-actions {
-    margin-top: 13px;
-  }
+  .rs-compose .rs-actions { margin-top: 13px; }
 
-  .rs-compose .rs-primary {
-    margin-left: auto;
-  }
+  .rs-compose .rs-primary { margin-left: auto; }
 
   .rs-note {
     margin-top: 12px;
     color: #9fb3d0;
     font-size: 11px;
   }
+
+  .rs-pending {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 12px;
+    padding: 9px 12px;
+    border: 1px solid #3b567d;
+    border-radius: 9px;
+    background: #16253d;
+    color: #cfe0ff;
+    font-size: 12px;
+  }
+
+  .rs-pending strong { color: #e6efff; }
+  .rs-pending .rs-button { margin-left: auto; }
 
   .rs-post-header {
     display: flex;
@@ -366,9 +363,7 @@
     font-weight: 800;
   }
 
-  .rs-post-header strong {
-    font-size: 13px;
-  }
+  .rs-post-header strong { font-size: 13px; }
 
   .rs-post-header small {
     display: block;
@@ -574,6 +569,7 @@
     color: #d6f4e1;
     transform: translateX(-50%);
     font-size: 12px;
+    display: none;
   }
 
   @media (max-width: 950px) {
@@ -587,17 +583,11 @@
   }
 
   @media (max-width: 650px) {
-    .rs-directory {
-      gap: 12px;
-    }
+    .rs-directory { gap: 12px; }
 
-    .rs-member-body {
-      padding: 0 13px 16px;
-    }
+    .rs-member-body { padding: 0 13px 16px; }
 
-    .rs-member-body h3 {
-      font-size: 17px;
-    }
+    .rs-member-body h3 { font-size: 17px; }
 
     .rs-member-body .rs-avatar {
       width: 62px;
@@ -605,13 +595,8 @@
       font-size: 21px;
     }
 
-    .rs-cover {
-      height: 180px;
-    }
-
-    .rs-mini-cover {
-      height: 85px;
-    }
+    .rs-cover { height: 180px; }
+    .rs-mini-cover { height: 85px; }
 
     .rs-cover-label strong {
       font-size: 21px;
@@ -631,13 +616,9 @@
       border-width: 4px;
     }
 
-    .rs-identity-info h1 {
-      font-size: 24px;
-    }
+    .rs-identity-info h1 { font-size: 24px; }
 
-    .rs-identity > .rs-actions {
-      width: 100%;
-    }
+    .rs-identity > .rs-actions { width: 100%; }
 
     .rs-tabs {
       margin: 0 17px;
@@ -645,17 +626,15 @@
     }
 
     .rs-profile-grid,
-    .rs-plans {
-      grid-template-columns: 1fr;
-    }
+    .rs-plans { grid-template-columns: 1fr; }
 
-    .rs-gallery img {
-      height: 110px;
-    }
+    .rs-gallery img { height: 110px; }
 
-    .rs-pad {
-      padding: 18px;
-    }
+    .rs-pad { padding: 18px; }
+  }
+
+  @media (max-width: 480px) {
+    .rs-directory { grid-template-columns: 1fr; }
   }
 </style>
 
@@ -663,9 +642,6 @@
 (() => {
   "use strict";
 
-  /*
-   * Evita instalar dos veces el mismo bloque.
-   */
   if (window.realmSyncProfilesInstalled) return;
 
   const main = document.querySelector("main");
@@ -694,6 +670,15 @@
       '"': "&quot;",
       "'": "&#39;"
     }[character]));
+
+  function safeURL(url) {
+    if (!url) return "";
+    const str = String(url);
+    if (/^(blob:|data:(image|video)\/|https?:\/\/|\/|\.\.?\/)/i.test(str)) {
+      return escapeHTML(str);
+    }
+    return "";
+  }
 
   const profiles = [
     {
@@ -813,12 +798,14 @@
   let uploadOwner = null;
   let toastTimer;
 
+  let directoryButton = null;
+  let packagesButton = null;
+
   const objectURLs = new Set();
 
   const toastElement = document.createElement("div");
   toastElement.className = "rs-toast";
   toastElement.setAttribute("role", "status");
-  toastElement.style.display = "none";
   document.body.append(toastElement);
 
   function toast(message) {
@@ -843,26 +830,36 @@
     objectURLs.delete(url);
   }
 
+  function clearPendingAttachment() {
+    if (!pendingAttachment) return;
+    releaseURL(pendingAttachment.url);
+    pendingAttachment = null;
+  }
+
   window.addEventListener("pagehide", event => {
     if (event.persisted) return;
     objectURLs.forEach(url => URL.revokeObjectURL(url));
     objectURLs.clear();
   });
 
-  /*
-   * Usa la navegación que ya existe en la página.
-   */
   function showSection(id) {
     const section = document.getElementById(id);
     if (!section) return;
 
-    const button = id === "rs-packages"
-      ? packagesButton
-      : directoryButton;
+    const button = id === "rs-packages" ? packagesButton : directoryButton;
+
+    let handled = false;
 
     if (typeof window.cambiarFase === "function") {
-      window.cambiarFase(id, button);
-    } else {
+      try {
+        window.cambiarFase(id, button);
+        handled = section.classList.contains("active");
+      } catch (err) {
+        console.warn("cambiarFase falló, usando fallback:", err);
+      }
+    }
+
+    if (!handled) {
       $$(".view-section").forEach(element => {
         element.classList.remove("active");
       });
@@ -878,14 +875,18 @@
     window.scrollTo({ top: 0, behavior: "auto" });
   }
 
-  const directoryButton = $$(".tab-btn", navigation).find(button =>
-    (button.getAttribute("onclick") || "").includes("directorio")
-  );
+  directoryButton =
+    $$(".tab-btn", navigation).find(button =>
+      (button.getAttribute("onclick") || "").includes("directorio")
+    ) || null;
 
-  /*
-   * Reemplaza el contenido del directorio.
-   * Esto también retira la antigua tarjeta Legendario de US$20.
-   */
+  if (!directoryButton) {
+    console.warn(
+      "RealmSync: no se encontró el botón del directorio " +
+      "con onclick que contenga 'directorio'."
+    );
+  }
+
   directorySection.innerHTML = `
     <div class="section-header">
       <div>
@@ -907,18 +908,21 @@
       >
 
       <button
-        class="rs-button"
+        type="button"
+        class="rs-button rs-primary"
         data-rs-filter="Todos"
         aria-pressed="true"
       >Todos</button>
 
       <button
+        type="button"
         class="rs-button"
         data-rs-filter="Player"
         aria-pressed="false"
       >Players</button>
 
       <button
+        type="button"
         class="rs-button"
         data-rs-filter="Game Master"
         aria-pressed="false"
@@ -979,7 +983,7 @@
           <li>Respuestas rápidas.</li>
           <li>Estadísticas de publicaciones.</li>
         </ul>
-        <button class="rs-button" disabled>
+        <button type="button" class="rs-button" disabled>
           No disponible para contratar
         </button>
       </article>
@@ -995,7 +999,7 @@
           <li>Eventos y solicitudes de ingreso.</li>
           <li>Colaboradores y programación.</li>
         </ul>
-        <button class="rs-button" disabled>
+        <button type="button" class="rs-button" disabled>
           No disponible para contratar
         </button>
       </article>
@@ -1011,9 +1015,11 @@
 
   main.append(packagesSection);
 
-  const packagesButton = document.createElement("button");
+  packagesButton = document.createElement("button");
   packagesButton.type = "button";
   packagesButton.className = "tab-btn";
+  packagesButton.id = "tab-paquetes";
+  packagesButton.dataset.view = "rs-packages";
   packagesButton.textContent = "Paquetes";
   packagesButton.addEventListener("click", () => {
     showSection("rs-packages");
@@ -1023,12 +1029,12 @@
 
   function avatarHTML(profile) {
     return `
-      <div class="rs-avatar ${profile.frame}">
+      <div class="rs-avatar ${profile.frame || ""}">
         ${
           profile.avatarURL
             ? `
               <img
-                src="${profile.avatarURL}"
+                src="${safeURL(profile.avatarURL)}"
                 alt="Avatar de ${escapeHTML(profile.name)}"
               >
             `
@@ -1039,7 +1045,13 @@
   }
 
   function renderDirectory() {
-    const query = $("#rs-search").value.trim().toLowerCase();
+    const searchInput = $("#rs-search");
+    const query = searchInput
+      ? searchInput.value.trim().toLowerCase()
+      : "";
+
+    const container = $("#rs-directory");
+    if (!container) return;
 
     const matches = profiles.filter(profile => {
       const matchesRole =
@@ -1055,11 +1067,11 @@
       return matchesRole && searchable.includes(query);
     });
 
-    $("#rs-directory").innerHTML = matches.length
+    container.innerHTML = matches.length
       ? matches.map(profile => `
         <article class="rs-card">
           <div
-            class="rs-cover rs-mini-cover ${profile.cover}"
+            class="rs-cover rs-mini-cover ${profile.cover || ""}"
           ></div>
 
           <div class="rs-member-body">
@@ -1080,8 +1092,9 @@
             </p>
 
             <button
+              type="button"
               class="rs-button rs-primary"
-              data-rs-profile="${profile.id}"
+              data-rs-profile="${escapeHTML(profile.id)}"
             >Ver perfil</button>
           </div>
         </article>
@@ -1103,10 +1116,7 @@
     const profile = profiles.find(item => item.id === id);
     if (!profile) return;
 
-    if (pendingAttachment) {
-      releaseURL(pendingAttachment.url);
-      pendingAttachment = null;
-    }
+    clearPendingAttachment();
 
     currentProfile = profile;
     activeTab = "Muro";
@@ -1121,19 +1131,20 @@
 
     profileSection.innerHTML = `
       <button
+        type="button"
         id="rs-back"
         class="rs-button"
         style="margin-bottom:20px"
       >← Volver a la comunidad</button>
 
       <div class="rs-profile-top">
-        <div class="rs-cover ${profile.cover}">
+        <div class="rs-cover ${profile.cover || ""}">
           ${
             profile.coverURL
               ? `
                 <img
                   class="rs-cover-photo"
-                  src="${profile.coverURL}"
+                  src="${safeURL(profile.coverURL)}"
                   alt="Portada del perfil"
                 >
               `
@@ -1167,26 +1178,39 @@
           </div>
 
           <div class="rs-actions">
-            <button id="rs-follow" class="rs-button">
+            <button
+              type="button"
+              id="rs-follow"
+              class="rs-button"
+              aria-pressed="${profile.followed ? "true" : "false"}"
+            >
               ${profile.followed ? "Siguiendo" : "Seguir"}
             </button>
 
             <button
+              type="button"
               id="rs-private-message"
               class="rs-button rs-primary"
             >Enviar mensaje</button>
 
-            <button id="rs-edit" class="rs-button">
-              Editar demo
-            </button>
+            <button
+              type="button"
+              id="rs-edit"
+              class="rs-button"
+            >Editar demo</button>
           </div>
         </div>
 
-        <div class="rs-tabs">
+        <div class="rs-tabs" role="tablist" aria-label="Secciones del perfil">
           ${
             ["Muro", "Información", "Fotos", "Videos"]
               .map(tab => `
                 <button
+                  type="button"
+                  role="tab"
+                  id="rs-tab-${tab}"
+                  aria-selected="${activeTab === tab ? "true" : "false"}"
+                  aria-controls="rs-content"
                   class="rs-button ${
                     activeTab === tab ? "active" : ""
                   }"
@@ -1248,13 +1272,17 @@
             </p>
 
             <div class="rs-actions" style="margin-top:15px">
-              <button id="rs-avatar" class="rs-button">
-                Cambiar avatar
-              </button>
+              <button
+                type="button"
+                id="rs-avatar"
+                class="rs-button"
+              >Cambiar avatar</button>
 
-              <button id="rs-cover" class="rs-button">
-                Cambiar portada
-              </button>
+              <button
+                type="button"
+                id="rs-cover"
+                class="rs-button"
+              >Cambiar portada</button>
             </div>
           </section>
 
@@ -1267,6 +1295,7 @@
             </p>
 
             <button
+              type="button"
               id="rs-view-packages"
               class="rs-button"
               style="margin-top:14px"
@@ -1274,20 +1303,29 @@
           </section>
         </aside>
 
-        <div id="rs-content" class="rs-content"></div>
+        <div
+          id="rs-content"
+          class="rs-content"
+          role="tabpanel"
+          aria-live="polite"
+        ></div>
       </div>
     `;
 
     $("#rs-back").onclick = () => {
+      clearPendingAttachment();
       renderDirectory();
       showSection("directorio");
     };
 
     $("#rs-follow").onclick = () => {
       profile.followed = !profile.followed;
-      $("#rs-follow").textContent = profile.followed
-        ? "Siguiendo"
-        : "Seguir";
+      const btn = $("#rs-follow");
+      btn.textContent = profile.followed ? "Siguiendo" : "Seguir";
+      btn.setAttribute(
+        "aria-pressed",
+        profile.followed ? "true" : "false"
+      );
     };
 
     $("#rs-private-message").onclick = () => {
@@ -1307,6 +1345,9 @@
 
     $$("[data-rs-tab]", profileSection).forEach(button => {
       button.onclick = () => {
+        const compose = $("#rs-post-text");
+        if (compose) profile._draft = compose.value;
+
         activeTab = button.dataset.rsTab;
         renderProfile();
       };
@@ -1318,6 +1359,7 @@
   function renderProfileContent() {
     const profile = currentProfile;
     const container = $("#rs-content");
+    if (!profile || !container) return;
 
     if (activeTab === "Información") {
       container.innerHTML = `
@@ -1358,7 +1400,7 @@
                   ${
                     photos.map(post => `
                       <img
-                        src="${post.attachment.url}"
+                        src="${safeURL(post.attachment.url)}"
                         alt="Foto publicada en el muro"
                       >
                     `).join("")
@@ -1392,7 +1434,7 @@
               ? videos.map(post => `
                 <video
                   class="rs-media"
-                  src="${post.attachment.url}"
+                  src="${safeURL(post.attachment.url)}"
                   controls
                   preload="metadata"
                 ></video>
@@ -1415,6 +1457,9 @@
       return;
     }
 
+    const hasPending =
+      pendingAttachment && pendingAttachment.ownerId === profile.id;
+
     container.innerHTML = `
       <div class="rs-feed">
         <section class="rs-card rs-pad rs-compose">
@@ -1426,22 +1471,49 @@
               escapeHTML(profile.name)
             }?"
             aria-label="Texto de la publicación"
-          ></textarea>
+          >${escapeHTML(profile._draft || "")}</textarea>
 
           <div class="rs-actions">
-            <button id="rs-add-photo" class="rs-button">
-              Foto
-            </button>
-
-            <button id="rs-add-video" class="rs-button">
-              Video
-            </button>
+            <button
+              type="button"
+              id="rs-add-photo"
+              class="rs-button"
+            >Foto</button>
 
             <button
+              type="button"
+              id="rs-add-video"
+              class="rs-button"
+            >Video</button>
+
+            <button
+              type="button"
               id="rs-publish"
               class="rs-button rs-primary"
             >Publicar demo</button>
           </div>
+
+          ${
+            hasPending
+              ? `
+                <div class="rs-pending">
+                  <strong>Archivo listo:</strong>
+                  <span>
+                    ${
+                      pendingAttachment.type === "video"
+                        ? "video"
+                        : "imagen"
+                    } seleccionado(a)
+                  </span>
+                  <button
+                    type="button"
+                    id="rs-clear-attachment"
+                    class="rs-button"
+                  >Quitar</button>
+                </div>
+              `
+              : ""
+          }
 
           <p id="rs-attachment-status" class="rs-note">
             Publicas como este perfil de muestra.
@@ -1453,13 +1525,26 @@
       </div>
     `;
 
+    const textarea = $("#rs-post-text");
+    textarea.oninput = () => {
+      profile._draft = textarea.value;
+    };
+
     $("#rs-add-photo").onclick = () => selectFile("photo");
     $("#rs-add-video").onclick = () => selectFile("video");
+
+    const clearBtn = $("#rs-clear-attachment");
+    if (clearBtn) {
+      clearBtn.onclick = () => {
+        clearPendingAttachment();
+        renderProfileContent();
+      };
+    }
 
     $("#rs-publish").onclick = () => {
       const text = $("#rs-post-text").value.trim();
 
-      if (!text && !pendingAttachment) {
+      if (!text && !hasPending) {
         toast("Escribe un mensaje o selecciona un archivo.");
         return;
       }
@@ -1468,11 +1553,16 @@
         text,
         likes: 0,
         comments: [],
-        attachment: pendingAttachment,
+        attachment: hasPending ? pendingAttachment : null,
         isNew: true
       });
 
-      pendingAttachment = null;
+      if (hasPending) {
+        pendingAttachment.ownerId = null;
+        pendingAttachment = null;
+      }
+
+      profile._draft = "";
 
       renderProfileContent();
       toast("Publicación añadida al perfil de demostración.");
@@ -1483,15 +1573,17 @@
 
   function renderPosts() {
     const profile = currentProfile;
+    const postsContainer = $("#rs-posts");
+    if (!profile || !postsContainer) return;
 
-    $("#rs-posts").innerHTML = profile.posts.map((post, index) => {
+    postsContainer.innerHTML = profile.posts.map((post, index) => {
       let media = "";
 
       if (post.attachment?.type === "photo") {
         media = `
           <img
             class="rs-media"
-            src="${post.attachment.url}"
+            src="${safeURL(post.attachment.url)}"
             alt="Foto publicada en el muro"
           >
         `;
@@ -1499,7 +1591,7 @@
         media = `
           <video
             class="rs-media"
-            src="${post.attachment.url}"
+            src="${safeURL(post.attachment.url)}"
             controls
             preload="metadata"
           ></video>
@@ -1557,18 +1649,22 @@
 
           <div class="rs-post-actions">
             <button
+              type="button"
               class="rs-button ${
                 post.liked ? "rs-liked" : ""
               }"
               data-rs-like="${index}"
+              aria-pressed="${post.liked ? "true" : "false"}"
             >${post.liked ? "Te gusta" : "Me gusta"}</button>
 
             <button
+              type="button"
               class="rs-button"
               data-rs-comment-focus="${index}"
             >Comentar</button>
 
             <button
+              type="button"
               class="rs-button"
               data-rs-delete="${index}"
             >Eliminar demo</button>
@@ -1607,6 +1703,7 @@
     $$("[data-rs-like]", profileSection).forEach(button => {
       button.onclick = () => {
         const post = profile.posts[Number(button.dataset.rsLike)];
+        if (!post) return;
         post.liked = !post.liked;
         renderPosts();
       };
@@ -1618,9 +1715,9 @@
           const index = button.dataset.rsCommentFocus;
 
           $(
-            [data-rs-comment-form="${index}"] input,
+            `[data-rs-comment-form="${index}"] input`,
             profileSection
-          ).focus();
+          )?.focus();
         };
       });
 
@@ -1633,8 +1730,10 @@
           if (!value) return;
 
           const index = Number(form.dataset.rsCommentForm);
-          profile.posts[index].comments.push(value);
+          const post = profile.posts[index];
+          if (!post) return;
 
+          post.comments.push(value);
           renderPosts();
         };
       });
@@ -1648,7 +1747,7 @@
         const index = Number(button.dataset.rsDelete);
         const [post] = profile.posts.splice(index, 1);
 
-        if (post.attachment) {
+        if (post?.attachment) {
           releaseURL(post.attachment.url);
         }
 
@@ -1657,9 +1756,6 @@
     });
   }
 
-  /*
-   * Selección local de avatar, portada, fotos y videos.
-   */
   const fileInput = document.createElement("input");
   fileInput.type = "file";
   fileInput.hidden = true;
@@ -1687,7 +1783,17 @@
       ? ["video/mp4", "video/webm"]
       : ["image/jpeg", "image/png", "image/webp"];
 
-    if (!allowedTypes.includes(file.type)) {
+    const allowedExts = isVideo
+      ? ["mp4", "webm"]
+      : ["jpg", "jpeg", "png", "webp"];
+
+    const ext = (file.name.split(".").pop() || "").toLowerCase();
+
+    const typeOk =
+      allowedTypes.includes(file.type) ||
+      (!file.type && allowedExts.includes(ext));
+
+    if (!typeOk) {
       toast(
         "Formato no admitido. Usa JPG, PNG o WebP para " +
         "imágenes; MP4 o WebM para videos."
@@ -1722,26 +1828,23 @@
       return;
     }
 
-    if (pendingAttachment) {
-      releaseURL(pendingAttachment.url);
-    }
-
+    clearPendingAttachment();
     pendingAttachment = {
       type: isVideo ? "video" : "photo",
-      url
+      url,
+      ownerId: currentProfile.id
     };
 
-    const status = $("#rs-attachment-status");
-
-    if (status) {
-      status.textContent =
-        ${file.name} listo. Pulsa «Publicar demo».;
+    if (activeTab === "Muro") {
+      renderProfileContent();
+      toast(`${file.name} listo. Pulsa «Publicar demo».`);
+    } else {
+      toast(
+        `${file.name} listo. Ve al Muro para publicarlo.`
+      );
     }
   });
 
-  /*
-   * Edición del perfil.
-   */
   const editDialog = document.createElement("dialog");
   editDialog.className = "rs-dialog";
 
@@ -1796,10 +1899,10 @@
   document.body.append(editDialog);
 
   function openEditDialog() {
+    if (!currentProfile) return;
     $("#rs-edit-name").value = currentProfile.name;
     $("#rs-edit-bio").value = currentProfile.bio;
     $("#rs-edit-clan").value = currentProfile.clan;
-
     editDialog.showModal();
   }
 
@@ -1807,6 +1910,7 @@
 
   $("#rs-edit-form").onsubmit = event => {
     event.preventDefault();
+    if (!currentProfile) return;
 
     const name = $("#rs-edit-name").value.trim();
     const bio = $("#rs-edit-bio").value.trim();
@@ -1814,7 +1918,11 @@
     if (!name || !bio) return;
 
     currentProfile.name = name;
-    currentProfile.initials = name.slice(0, 2).toUpperCase();
+    currentProfile.initials =
+      (name.match(/[A-Za-z0-9]/g) || ["?"])
+        .slice(0, 2)
+        .join("")
+        .toUpperCase() || "?";
     currentProfile.bio = bio;
     currentProfile.clan = $("#rs-edit-clan").value.trim();
 
@@ -1823,77 +1931,100 @@
     renderDirectory();
   };
 
-  /*
-   * Corrección del botón original Banear / Desbanear.
-   * La acción sigue siendo una simulación sobre la tabla.
-   */
   window.banear = function (button) {
     const row = button.closest("tr");
     if (!row) return;
 
-    const statusCell = row.cells[2];
+    const statusCell =
+      row.querySelector(".status, [data-status]") ||
+      row.querySelector("td:nth-child(3)");
+
     if (!statusCell) return;
 
+    const textStatus = statusCell.textContent.trim().toLowerCase();
     const wasBanned =
-      row.dataset.rsBanned === "true" ||
-      statusCell.textContent.trim().toLowerCase() === "baneado";
+      row.dataset.banned === "true" ||
+      textStatus === "baneado" ||
+      textStatus === "banned";
 
     const willBan = !wasBanned;
 
-    const name = row.cells[0]?.textContent.trim() || "esta cuenta";
+    const name =
+      row.cells[0]?.textContent.trim() ||
+      row.querySelector("td")?.textContent.trim() ||
+      "esta cuenta";
+
     const action = willBan ? "banear" : "reactivar";
 
-    if (!confirm(¿Confirmas ${action} a ${name} en la demo?)) {
+    if (!confirm(`¿Confirmas ${action} a ${name} en la demo?`)) {
       return;
     }
 
-    row.dataset.rsBanned = String(willBan);
-
+    row.dataset.banned = String(willBan);
     statusCell.textContent = willBan ? "Baneado" : "Activo";
-    statusCell.style.color = willBan
-      ? "var(--danger)"
-      : "var(--success)";
+    statusCell.classList.toggle("is-banned", willBan);
+    statusCell.classList.toggle("is-active", !willBan);
+
+    try {
+      const styles = getComputedStyle(document.documentElement);
+      const danger =
+        styles.getPropertyValue("--danger").trim() || "#ff6b6b";
+      const success =
+        styles.getPropertyValue("--success").trim() || "#4ade80";
+      statusCell.style.color = willBan ? danger : success;
+    } catch (_) {
+      // Ignora si getComputedStyle no está disponible.
+    }
 
     button.textContent = willBan ? "Desbanear" : "Banear";
-
     button.classList.toggle("btn-ban", !willBan);
     button.classList.toggle("btn-verify", willBan);
-
     button.style.removeProperty("color");
   };
 
-  /*
-   * Retira cualquier tarjeta antigua que todavía muestre
-   * el plan de US$20 fuera del directorio sustituido.
-   */
   $$(".profile-card").forEach(card => {
-    const text = card.textContent;
+    const heading =
+      card.querySelector("h1, h2, h3, h4, strong, .card-title") || null;
+    const headingText = (heading?.textContent || "").trim();
 
-    if (/\$\s*20\b/.test(text) || /legendario/i.test(text)) {
+    const looksLikeLegendario =
+      /legendario/i.test(headingText) ||
+      /legendario/i.test(card.textContent);
+
+    const mentions20 =
+      /(^|[\s(])(US\$|USD|\$)\s*20(?!\d)/i.test(card.textContent);
+
+    if (looksLikeLegendario || mentions20) {
       card.remove();
     }
   });
 
-  /*
-   * Enter en el chat original.
-   */
   const originalChatInput = document.getElementById("realm-input");
 
-  originalChatInput?.addEventListener("keydown", event => {
-    if (
-      event.key === "Enter" &&
-      !event.isComposing &&
-      typeof window.enviarMensaje === "function"
-    ) {
-      event.preventDefault();
-      window.enviarMensaje();
-    }
-  });
+  if (originalChatInput) {
+    const inlineHandler =
+      (originalChatInput.getAttribute("onkeydown") || "") +
+      " " +
+      (originalChatInput.getAttribute("onkeypress") || "");
 
-  /*
-   * Aclara que el login administrativo original es una demo.
-   * No lo convierte en un sistema seguro.
-   */
+    const alreadyHandlesEnter = /enviarMensaje/.test(inlineHandler);
+
+    if (!alreadyHandlesEnter && !originalChatInput.dataset.rsEnterBound) {
+      originalChatInput.dataset.rsEnterBound = "true";
+
+      originalChatInput.addEventListener("keydown", event => {
+        if (
+          event.key === "Enter" &&
+          !event.isComposing &&
+          typeof window.enviarMensaje === "function"
+        ) {
+          event.preventDefault();
+          window.enviarMensaje();
+        }
+      });
+    }
+  }
+
   const originalPassword =
     document.getElementById("admin-password");
 
@@ -1915,7 +2046,10 @@
     originalAdminCard.prepend(warning);
   }
 
-  $("#rs-search").addEventListener("input", renderDirectory);
+  const searchInput = $("#rs-search");
+  if (searchInput) {
+    searchInput.addEventListener("input", renderDirectory);
+  }
 
   $$("[data-rs-filter]", directorySection).forEach(button => {
     button.addEventListener("click", () => {
@@ -1923,7 +2057,6 @@
 
       $$("[data-rs-filter]", directorySection).forEach(item => {
         const selected = item === button;
-
         item.setAttribute("aria-pressed", String(selected));
         item.classList.toggle("rs-primary", selected);
       });
